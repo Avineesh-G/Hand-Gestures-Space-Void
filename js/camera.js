@@ -95,10 +95,11 @@ const CameraController = (() => {
       drawSkeleton(sortedHands[i], i);
     }
 
-    // Detect gestures
-    const gestures = sortedHands.map(lm => GestureDetector.detect(lm));
-    Game.setGestures(gestures, sortedHands);
-    updateDebug({ gestures, landmarks: sortedHands });
+    // Detect gestures (single player)
+    const handsToProcess = sortedHands.length > 0 ? [sortedHands[0]] : [];
+    const gestures = handsToProcess.map(lm => GestureDetector.detect(lm));
+    Game.setGestures(gestures, handsToProcess);
+    updateDebug({ gestures, landmarks: handsToProcess });
 
     // Handle gesture recording
     if (recordingMode && recordCountdown <= 0) {

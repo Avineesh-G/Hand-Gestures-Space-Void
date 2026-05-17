@@ -122,7 +122,6 @@ All loaded via CDN in `index.html` — no `package.json` or build step required.
 ## 💡 Completed Features
 
 - [x] High score leaderboard (localStorage)
-- [x] Multi-hand support (two-player co-op)
 - [x] Different game modes (endless, timed, boss rush)
 - [x] Gesture recorder (Record custom gestures for Screen Bomb!)
 

@@ -117,23 +117,12 @@ const Game = (() => {
     return [
       {
         id: 1,
-        x: canvas.width * 0.35, y: canvas.height - 60,
-        targetX: canvas.width * 0.35, targetY: canvas.height - 60,
+        x: canvas.width * 0.5, y: canvas.height - 60,
+        targetX: canvas.width * 0.5, targetY: canvas.height - 60,
         w: 36, h: 44,
         speed: 400,
         shield: false, shieldTimer: 0,
         color: '#4fffb0',
-        boostActive: false,
-        shootCooldown: 0
-      },
-      {
-        id: 2,
-        x: canvas.width * 0.65, y: canvas.height - 60,
-        targetX: canvas.width * 0.65, targetY: canvas.height - 60,
-        w: 36, h: 44,
-        speed: 400,
-        shield: false, shieldTimer: 0,
-        color: '#ff4faa',
         boostActive: false,
         shootCooldown: 0
       }
@@ -599,9 +588,7 @@ const Game = (() => {
     if (state === 'playing' && landmarksArray) {
       for (let i = 0; i < Math.min(players.length, landmarksArray.length); i++) {
         const hand = landmarksArray[i];
-        // Use the index finger MCP joint (landmark 5) as the tracking point
         const pt = hand[5] || hand[0];
-        // Flip the X coordinate so the ship follows the hand on the mirrored screen
         players[i].targetX = (1 - pt.x) * canvas.width;
         players[i].targetY = pt.y * canvas.height;
       }
@@ -619,12 +606,6 @@ const Game = (() => {
     
     el.textContent = displayGestures.join(' | ') || 'No Hand Detected';
     el.style.color = displayGestures.length ? 'var(--accent)' : 'var(--muted)';
-    
-    if (state === 'playing' && gestures.length > players.length) {
-       for (let i = players.length; i < gestures.length && i < 2; i++) {
-           players.push(createPlayers()[i]);
-       }
-    }
   }
 
   // ── State Machine ──────────────────────────────────────────
@@ -703,15 +684,6 @@ const Game = (() => {
       Comma:      { p: 0, a: 'boost' },
       KeyP:       { p: 0, a: 'pause' },
       KeyC:       { p: 0, a: 'bomb' },
-      
-      // Player 2
-      KeyA:       { p: 1, a: 'move_left' },
-      KeyD:       { p: 1, a: 'move_right' },
-      KeyW:       { p: 1, a: 'jump' },
-      KeyS:       { p: 1, a: 'move_down' },
-      ShiftLeft:  { p: 1, a: 'rapid_fire' },
-      KeyE:       { p: 1, a: 'shield' },
-      KeyQ:       { p: 1, a: 'boost' },
     };
     const held = new Set();
     window.addEventListener('keydown', e => {
@@ -724,10 +696,6 @@ const Game = (() => {
           
           if (state === 'paused' && ['move_left', 'move_right', 'jump', 'move_down'].includes(binding.a)) {
             togglePause();
-          }
-          
-          if (binding.p === 1 && players.length === 1 && state === 'playing') {
-             players.push(createPlayers()[1]);
           }
         }
       }
