@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpaceVoid</title>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- MediaPipe Hands -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ─── UI Shell ─── -->
+  <div id="app">
+
+    <!-- Header -->
+    <header id="header">
+      <h1>🚀 Space<span>Void</span></h1>
+      <div id="status-badge">
+        <span id="status-dot"></span>
+        <span id="status-text">Starting camera…</span>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main id="main">
+
+      <!-- Left: Camera + Overlay -->
+      <section id="camera-panel">
+        <div id="camera-wrapper">
+          <video id="webcam" autoplay playsinline muted></video>
+          <canvas id="overlay-canvas"></canvas>
+          <div id="gesture-label">No Hand Detected</div>
+        </div>
+        <div id="gesture-guide">
+          <h3>Gesture Guide</h3>
+          <ul id="gesture-list">
+            <!-- populated by JS -->
+          </ul>
+        </div>
+        <div id="gesture-recorder">
+          <button id="record-btn">📸 Record Custom Gesture (Bomb)</button>
+          <div id="record-status" class="hidden">Recording...</div>
+        </div>
+      </section>
+
+      <!-- Right: Game Canvas -->
+      <section id="game-panel">
+        <div id="score-bar">
+          <span>SCORE <strong id="score">0</strong></span>
+          <span>HIGH <strong id="high-score">0</strong></span>
+          <span>LEVEL <strong id="level">1</strong></span>
+          <span>TIME <strong id="time">∞</strong></span>
+          <span>LIVES <strong id="lives">❤️❤️❤️</strong></span>
+        </div>
+        <canvas id="game-canvas"></canvas>
+        <div id="overlay-screen" class="hidden">
+          <div id="overlay-content">
+            <h2 id="overlay-title">Ready?</h2>
+            <p id="overlay-sub">Select a mode and show your hand to the camera</p>
+            <div id="mode-selection">
+              <button class="mode-btn active" data-mode="endless">Endless</button>
+              <button class="mode-btn" data-mode="timed">Timed</button>
+              <button class="mode-btn" data-mode="boss">Boss Rush</button>
+            </div>
+            <div id="leaderboard" class="hidden">
+              <h3>Top Scores</h3>
+              <ul id="leaderboard-list"></ul>
+            </div>
+            <button id="start-btn">Start Game</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Debug Panel (toggle with D key) -->
+    <div id="debug-panel" class="hidden">
+      <h4>Debug Info</h4>
+      <pre id="debug-output"></pre>
+    </div>
+
+  </div>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/gestures.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
